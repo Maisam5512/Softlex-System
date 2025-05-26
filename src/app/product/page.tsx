@@ -17,7 +17,7 @@ import { BsStar, BsStarFill } from "react-icons/bs"
 
 export default function ProductsPage() {
   const [activeProduct, setActiveProduct] = useState(0)
-  const [hoveredProduct, setHoveredProduct] = useState<number | null>(null)
+  //const [hoveredProduct, setHoveredProduct] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const productsRef = useRef(null)
@@ -274,8 +274,8 @@ export default function ProductsPage() {
                             : "bg-gray-50 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500 hover:scale-102"
                         }`}
                         onClick={() => setActiveProduct(index)}
-                        onMouseEnter={() => setHoveredProduct(index)}
-                        onMouseLeave={() => setHoveredProduct(null)}
+                        // onMouseEnter={() => setHoveredProduct(index)}
+                        // onMouseLeave={() => setHoveredProduct(null)}
                         initial={{ opacity: 0, x: -20 }}
                         animate={productsInView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -546,7 +546,7 @@ export default function ProductsPage() {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Build Something Amazing?</h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Let's discuss how we can help bring your ideas to life with our expertise in software development.
+              Let&apos;s discuss how we can help bring your ideas to life with our expertise in software development.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { Github, Linkedin } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {teamMembers} from '@/data/Team members'
+import { team } from '@/data/Team members'
 
 interface TeamMember {
   id: number
@@ -145,7 +145,7 @@ export default function Component() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
+          {team.map((member, index) => (
             <TeamMemberCard key={member.id} member={member} index={index} />
           ))}
         </div>
