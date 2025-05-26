@@ -46,14 +46,18 @@ export default function ContactPage() {
     "Consulting",
   ]
 
+
   const budgetOptions = [
-    "Under $5,000",
-    "$5,000 - $10,000",
-    "$10,000 - $25,000",
-    "$25,000 - $50,000",
-    "$50,000+",
-    "Not sure yet",
-  ]
+  "$100 - $500",
+  "$500 - $1,000",
+  "$1,000 - $2,000",
+  "$2,000 - $3,000",
+  "$3,000 - $4,000",
+  "$4,000 - $5,000",
+  "Above $5,000",
+  "Not sure yet",
+];
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -220,7 +224,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Call Us</h3>
-                      <p className="text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
+                      <p className="text-gray-600 dark:text-gray-300">0092-320-8468911</p>
                     </div>
                   </motion.div>
 
@@ -231,25 +235,15 @@ export default function ContactPage() {
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Visit Us</h3>
                       <p className="text-gray-600 dark:text-gray-300">
-                        123 Tech Street, Suite 456
+                        Airport Road
                         <br />
-                        San Francisco, CA 94105
+                        Lahore, Punjab, 
                         <br />
-                        United States
+                        Pakistan
                       </p>
                     </div>
                   </motion.div>
                 </div>
-
-                <div className="mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Business Hours</h3>
-                  <div className="space-y-2 text-gray-600 dark:text-gray-300">
-                    <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p>Saturday: 10:00 AM - 2:00 PM</p>
-                    <p>Sunday: Closed</p>
-                  </div>
-                </div>
-
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Connect With Us</h3>
                   <div className="flex space-x-4">
@@ -618,9 +612,9 @@ export default function ContactPage() {
           >
             <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0968173775!2d-122.40058672393326!3d37.78774771469164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80858085d0cec7c5%3A0x75a0c2f7eb4c4b1e!2sMarket%20St%2C%20San%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1690000000000!5m2!1sen!2sus"
-                width="100%"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3401.141071669384!2d74.4230593746354!3d31.520285147147955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1747731130250!5m2!1sen!2s" 
                 height="100%"
+                width="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
@@ -629,6 +623,8 @@ export default function ContactPage() {
                 className="grayscale hover:grayscale-0 transition-all duration-500"
               ></iframe>
             </div>
+
+    
           </motion.div>
         </div>
       </section>

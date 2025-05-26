@@ -1,687 +1,568 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence, useInView } from "framer-motion"
-import { FaCode, FaMobileAlt, FaDesktop, FaServer, FaClock } from "react-icons/fa"
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io"
-import { BsArrowRight } from "react-icons/bs"
+import {
+  FaMobileAlt,
+  FaGlobe,
+  FaTicketAlt,
+  FaPlane,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCheck,
+  FaPlay,
+} from "react-icons/fa"
+import { BsStar, BsStarFill } from "react-icons/bs"
 
 export default function ProductsPage() {
-  type ProjectWithType =  { type: "ongoing" | "completed" };
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [selectedProject, setSelectedProject] = useState <ProjectWithType | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const projectsPerPage = 6
+  const [activeProduct, setActiveProduct] = useState(0)
+  const [hoveredProduct, setHoveredProduct] = useState<number | null>(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  const ongoingRef = useRef(null)
-  const ongoingInView = useInView(ongoingRef, { once: true, amount: 0.2 })
+  const productsRef = useRef(null)
+  const productsInView = useInView(productsRef, { once: true, amount: 0.2 })
 
-  const completedRef = useRef(null)
-  const completedInView = useInView(completedRef, { once: true, amount: 0.2 })
+  useEffect(() => {
+    setCurrentImageIndex(0)
+  }, [activeProduct])
 
-  // Categories for filtering
-  const categories = [
-    { id: "all", name: "All Projects" },
-    { id: "web", name: "Web Apps" },
-    { id: "mobile", name: "Mobile Apps" },
-    { id: "desktop", name: "Desktop Software" },
-    { id: "cloud", name: "Cloud Solutions" },
-  ]
-
-  // Ongoing projects data
-  const ongoingProjects = [
+  const products = [
     {
       id: 1,
-      title: "HealthTrack Pro",
-      category: "mobile",
-      progress: 75,
-      eta: "Q3 2023",
+      title: "Rimsha Labs",
+      category: "Healthcare",
+      status: "Completed",
+      icon: <FaMobileAlt className="text-white text-2xl" />,
       description:
-        "A comprehensive health tracking mobile application with AI-powered insights and personalized recommendations.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React Native", "Firebase", "TensorFlow"],
-      client: "MediCorp Inc.",
-      features: [
-        "Real-time health monitoring",
-        "AI-powered health insights",
-        "Integration with wearable devices",
-        "Personalized health recommendations",
+        "RIMSHA LAB offers a seamless and compassionate healthcare experience, providing expert diagnostic testing and a comprehensive range of medical services. Our dedicated team is committed to delivering timely, personalized, and reliable care, ensuring clear communication and support at every step of your healthcare journey. Whether you need to book a sample collection or explore our services, we are here to assist you with professionalism and care.",
+      images: [
+         "/Rimsh-tumbnail.png",
+        "/Rimsha-1.png",
+        "/Rimsha-2.png",
+        "/Rimsha-3.png",
       ],
+      keyFeatures: [
+        "Wide range of diagnostic tests",
+        "Accurate and timely test reports",
+        "State-of-the-art lab equipment",
+        "Expert-certified analysis",
+        "Online report access",
+        "Home sample collection",
+        "Affordable pricing",
+        "Confidential and secure results",
+      ],
+      technologies: ["Next js", "Strapi", "Shadcn Ui", "Vercel"],
+      rating: 4.8,
+      color: "from-blue-500 to-blue-600",
     },
     {
       id: 2,
-      title: "FinanceFlow",
-      category: "web",
-      progress: 60,
-      eta: "Q4 2023",
+      title: "PATHOLOGY LAB MANAGEMENT SYSTEM",
+      category: "Government",
+      status: "ongoing",
+      progress: 30,
+      icon: <FaGlobe className="text-white text-2xl" />,
       description:
-        "An enterprise-grade financial management platform with advanced reporting and forecasting capabilities.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Next.js", "PostgreSQL", "AWS"],
-      client: "Global Finance Partners",
-      features: [
-        "Real-time financial dashboards",
-        "Advanced reporting tools",
-        "Predictive analytics",
-        "Compliance management",
+        "PATHOLOGY LAB MANAGEMENT SYSTEM is a comprehensive digital solution designed to streamline diagnostic lab operations, from patient registration to report generation. Our system enhances efficiency, accuracy, and patient care with automated workflows, real-time data tracking, and secure record management—empowering healthcare providers to deliver faster, more reliable diagnostic services.",
+      images: [
+               "/Lab-tumbnail.webp",
+        "/Lab-1.png",
+        "/Lab-2.png",
+        "/Lab-3.png",
+        "/Lab-4.png",
+
       ],
+      keyFeatures: [
+        "End-to-end patient registration (demographics, contact, referring doctor)",
+        "Automated report generation with standardized templates",
+        "Real-time dashboard analytics (patient volume, test stats, gender distribution)",
+        "Test management (tracking, scheduling, result entry)",
+        "Secure patient data storage (HIPAA/GDPR compliant)",
+        "Bulk/batch processing for high-volume labs",
+        "Integration with lab equipment for direct result uploads",
+        "Multi-user access with role-based permissions",
+        "Trend visualization (e.g., patient gender ratios, test frequencies)",
+        "Searchable patient/test database with filters",
+      ],
+      technologies: ["React", "Node.js", "MongoDB", "IoT", "AWS", "Docker"],
+      rating: 4.9,
+      color: "from-green-500 to-green-600",
     },
     {
       id: 3,
-      title: "LogisticsHub",
-      category: "desktop",
+      title: "Ahmed Travel",
+      category: "E-Commerce",
+      status: "ongoing",
       progress: 40,
-      eta: "Q1 2024",
+      icon: <FaTicketAlt className="text-white text-2xl" />,
       description:
-        "A comprehensive logistics management system for tracking, managing, and optimizing supply chain operations.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Electron", "Node.js", "MongoDB"],
-      client: "Global Shipping Co.",
-      features: ["Real-time shipment tracking", "Route optimization", "Inventory management", "Supplier portal"],
+        "Ahmed Travel provides a seamless and reliable online bus ticket booking platform, connecting travelers to their favorite destinations with ease. Enjoy hassle-free reservations, competitive prices, and real-time updates—all designed to make your journey smooth and convenient.",
+      images: [
+       "/Ahmed-tumbnail.webp",
+        "/Ahmed-1.png",
+        "/Ahmed-2.png",
+        "/Ahmed-3.png",
+      ],
+      keyFeatures: [
+        "Easy online bus ticket booking",
+        "Real-time seat availability & selection",
+        "Multiple payment options (cards, mobile wallets, cash)",
+        "Instant e-tickets & SMS confirmations",
+        "Route & schedule search with filters",
+        "Customer support (24/7 helpline)",
+        "Secure and user-friendly platform",
+        "Discounts & promotional offers",
+        "Cancellation & refund policy",
+        "Multi-language support (if applicable)",
+      ],
+      technologies: ["Next.js", "PostgreSQL", "Stripe", "Redis", "AWS", "Elasticsearch"],
+      rating: 4.7,
+      color: "from-purple-500 to-purple-600",
     },
     {
       id: 4,
-      title: "CloudSync Enterprise",
-      category: "cloud",
-      progress: 85,
-      eta: "Q3 2023",
-      description: "A scalable cloud synchronization solution for enterprise data management and collaboration.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Azure", "Kubernetes", "Go"],
-      client: "TechCorp Solutions",
-      features: ["Multi-cloud support", "End-to-end encryption", "Automated backups", "Enterprise-grade security"],
-    },
-    {
-      id: 5,
-      title: "RetailAnalytics",
-      category: "web",
-      progress: 30,
-      eta: "Q2 2024",
-      description: "An advanced analytics platform for retail businesses to optimize operations and increase sales.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React", "Python", "TensorFlow"],
-      client: "Global Retail Association",
-      features: ["Customer behavior analysis", "Inventory optimization", "Sales forecasting", "Personalized marketing"],
+      title: "Umrah Booking System",
+      category: "SaaS",
+      status: "ongoing",
+      progress: 50,
+      icon: <FaPlane className="text-white text-2xl" />,
+      description:
+        "Umrah Booking System is a specialized platform for travel agencies to manage Umrah/Hajj pilgrimages, streamlining flight/hotel bookings, group registrations, and payment tracking. It ensures compliance with Islamic travel requirements while offering real-time itinerary updates and cost management.",
+      images: [
+        "/Umrah-tumbnail.png",
+        "/Umrah-1.jpeg",
+        "/Umrah-2.jpeg",
+        "/Umrah-3.jpeg",
+        "/Umrah-4.jpeg",
+      ],
+      keyFeatures: [
+        "End-to-end Umrah package bookings (flights + hotels)",
+        "Group/Family traveler management (adults/youth/children)",
+        "Visa processing & documentation support",
+        "Real-time cost breakdowns (base fare, taxes, net total)",
+        "Multi-city itinerary planning (Medina/Makkah)",
+        "Payment tracking & refund management",
+        "Admin dashboard for booking analytics",
+        "Secure customer data (PCI-DSS compliant)",
+        "Customizable packages (economy/luxury)",
+        "24/7 customer support",
+      ],
+      technologies: ["Next js", "Strapi", "PostgreSQL", "Shadcn Ui", "Docker"],
+      rating: 4.6,
+      color: "from-orange-500 to-orange-600",
     },
   ]
 
-  // Completed projects data
-  const completedProjects = [
-    {
-      id: 101,
-      title: "SmartCity Platform",
-      category: "web",
-      description:
-        "A comprehensive smart city management platform that integrates IoT devices, data analytics, and citizen services.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React", "Node.js", "MongoDB", "IoT"],
-      client: "Metropolitan City Council",
-      outcome: "Reduced operational costs by 30% and improved citizen satisfaction by 45%",
-      year: 2023,
-    },
-    {
-      id: 102,
-      title: "MediConnect",
-      category: "mobile",
-      description:
-        "A telemedicine application connecting patients with healthcare providers for virtual consultations and follow-ups.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Flutter", "Firebase", "WebRTC"],
-      client: "National Healthcare Network",
-      outcome: "Enabled 10,000+ virtual consultations monthly, reducing in-person visits by 35%",
-      year: 2022,
-    },
-    {
-      id: 103,
-      title: "SupplyChain Pro",
-      category: "desktop",
-      description:
-        "An end-to-end supply chain management software for manufacturing companies with real-time tracking and analytics.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Electron", "React", "PostgreSQL"],
-      client: "Global Manufacturing Inc.",
-      outcome: "Improved inventory accuracy by 28% and reduced logistics costs by 22%",
-      year: 2022,
-    },
-    {
-      id: 104,
-      title: "CloudSecure",
-      category: "cloud",
-      description:
-        "A cloud security solution providing advanced threat detection, compliance monitoring, and automated remediation.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["AWS", "Kubernetes", "Python"],
-      client: "Financial Services Group",
-      outcome: "Reduced security incidents by 75% and achieved compliance with industry regulations",
-      year: 2023,
-    },
-    {
-      id: 105,
-      title: "EduLearn Platform",
-      category: "web",
-      description: "A comprehensive e-learning platform with interactive courses, assessments, and progress tracking.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Next.js", "GraphQL", "MongoDB"],
-      client: "National Education Association",
-      outcome: "Increased student engagement by 40% and improved course completion rates by 35%",
-      year: 2021,
-    },
-    {
-      id: 106,
-      title: "RetailPOS Pro",
-      category: "desktop",
-      description: "A modern point-of-sale system with inventory management, customer loyalty, and analytics features.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["C#", ".NET", "SQL Server"],
-      client: "Retail Chain Group",
-      outcome: "Streamlined checkout process by 65% and improved inventory accuracy by 40%",
-      year: 2022,
-    },
-    {
-      id: 107,
-      title: "TravelCompanion",
-      category: "mobile",
-      description:
-        "A comprehensive travel app with itinerary management, local recommendations, and real-time updates.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React Native", "Node.js", "MongoDB"],
-      client: "Global Travel Services",
-      outcome: "Achieved 500,000+ downloads with a 4.8/5 user rating",
-      year: 2023,
-    },
-    {
-      id: 108,
-      title: "IndustrialIoT",
-      category: "cloud",
-      description: "An industrial IoT platform for monitoring, analyzing, and optimizing manufacturing operations.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Azure IoT", "React", "Time Series Insights"],
-      client: "Manufacturing Consortium",
-      outcome: "Reduced downtime by 45% and improved operational efficiency by 30%",
-      year: 2022,
-    },
-    {
-      id: 109,
-      title: "FinTech Portal",
-      category: "web",
-      description:
-        "A secure financial technology portal for investment management, portfolio tracking, and financial planning.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Angular", "Java Spring", "PostgreSQL"],
-      client: "Investment Management Group",
-      outcome: "Processed over $2 billion in transactions with 99.99% uptime",
-      year: 2021,
-    },
-  ]
-
-  // Filter completed projects based on category
-  const filteredProjects =
-    activeCategory === "all"
-      ? completedProjects
-      : completedProjects.filter((project) => project.category === activeCategory)
-
-  // Pagination logic
-  const indexOfLastProject = currentPage * projectsPerPage
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage
-  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject)
-  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage)
-
-  // Category icon mapping
-  const getCategoryIcon = (category : string) => {
-    switch (category) {
-      case "web":
-        return <FaDesktop className="text-blue-500" />
-      case "mobile":
-        return <FaMobileAlt className="text-blue-500" />
-      case "desktop":
-        return <FaCode className="text-blue-500" />
-      case "cloud":
-        return <FaServer className="text-blue-500" />
-      default:
-        return <FaCode className="text-blue-500" />
-    }
-  }
-
-  const ProjectDetailModal = ({ project, onClose, type } : { project: any; onClose: () => void; type: "ongoing" | "completed" }) => {
-    const isOngoing = type === "ongoing";
-
+  // Star rating component
+  const StarRating = ({ rating }: { rating: number }) => {
     return (
-      <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
-        <motion.div
-          className="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ type: "spring", damping: 25 }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-gray-800/80 rounded-full text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-            onClick={onClose}
-          >
-            ✕
-          </button>
-
-          <div className="relative h-64 sm:h-80">
-            <Image src={project.image || "/placeholder.svg"} alt={project.title} fill className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-              <div className="p-6 text-white">
-                <div className="flex items-center mb-2">
-                  {getCategoryIcon(project.category)}
-                  <span className="ml-2 text-sm font-medium uppercase tracking-wider text-blue-300">
-                    {categories.find((c) => c.id === project.category)?.name}
-                  </span>
+      <div className="flex items-center">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <div key={star} className="relative">
+            {star <= Math.floor(rating) ? (
+              <BsStarFill className="text-yellow-400 w-5 h-5" />
+            ) : star === Math.ceil(rating) && rating % 1 !== 0 ? (
+              <div className="relative">
+                <BsStar className="text-gray-300 w-5 h-5" />
+                <div className="absolute inset-0 overflow-hidden" style={{ width: `${(rating % 1) * 100}%` }}>
+                  <BsStarFill className="text-yellow-400 w-5 h-5" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold">{project.title}</h2>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6">
-            <div className="flex flex-wrap items-center mb-4 text-sm">
-              <div className="flex items-center mr-4 mb-2">
-                <span className="font-semibold text-gray-700 dark:text-gray-300 mr-2">Client:</span>
-                <span className="text-gray-600 dark:text-gray-400">{project.client}</span>
-              </div>
-
-              {isOngoing ? (
-                <div className="flex items-center mr-4 mb-2">
-                  <span className="font-semibold text-gray-700 dark:text-gray-300 mr-2">Expected Completion:</span>
-                  <span className="text-gray-600 dark:text-gray-400">{project.eta}</span>
-                </div>
-              ) : (
-                <div className="flex items-center mr-4 mb-2">
-                  <span className="font-semibold text-gray-700 dark:text-gray-300 mr-2">Completed:</span>
-                  <span className="text-gray-600 dark:text-gray-400">{project.year}</span>
-                </div>
-              )}
-            </div>
-
-            <p className="text-gray-700 dark:text-gray-300 mb-6">{project.description}</p>
-
-            {isOngoing ? (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Key Features</h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {project.features.map((feature : string, index : number) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-blue-500 mr-2">•</span>
-                      <span className="text-gray-600 dark:text-gray-400">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ) : (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Outcome</h3>
-                <p className="text-gray-600 dark:text-gray-400 italic">{project.outcome}</p>
-              </div>
+              <BsStar className="text-gray-300 w-5 h-5" />
             )}
-
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Technologies Used</h3>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech : string, index : number) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {isOngoing && (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">Current Progress</h3>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mb-2">
-                  <div
-                    className="bg-blue-600 h-4 rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${project.progress}%` }}
-                  ></div>
-                </div>
-                <div className="text-right text-sm text-gray-600 dark:text-gray-400">{project.progress}% Complete</div>
-              </div>
-            )}
-
-            <div className="flex justify-end">
-              <motion.button
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {isOngoing ? "Request Updates" : "View Case Study"}
-                <BsArrowRight className="ml-2" />
-              </motion.button>
-            </div>
           </div>
-        </motion.div>
-      </motion.div>
+        ))}
+        <span className="ml-2 text-gray-600 dark:text-gray-400 font-medium">{rating}</span>
+      </div>
     )
+  }
+
+  const getStatusBadge = (status: string, progress?: number) => {
+    switch (status.toLowerCase()) {
+      case "completed":
+        return (
+          <span className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold shadow-lg">
+            Completed
+          </span>
+        )
+      case "ongoing":
+        return (
+          <span className="px-4 py-2 bg-yellow-500 text-white rounded-full text-sm font-semibold shadow-lg">
+            {progress ? `${progress}% Completed` : "In Progress"}
+          </span>
+        )
+      default:
+        return (
+          <span className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-semibold shadow-lg">
+            {status}
+          </span>
+        )
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-indigo-900">
+      <section className="relative py-20 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-900 dark:to-indigo-900">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-400 dark:bg-blue-700 rounded-full filter blur-3xl opacity-20"></div>
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-300 dark:bg-blue-800 rounded-full filter blur-3xl opacity-20"></div>
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full filter blur-3xl"></div>
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-white/10 rounded-full filter blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full filter blur-2xl"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.h1
-              className="text-4xl md:text-5xl font-bold text-white mb-6"
+              className="text-5xl md:text-6xl font-bold text-white mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              Our Products & Projects
+              Our Products
             </motion.h1>
             <motion.p
-              className="text-xl text-blue-100 mb-8"
+              className="text-xl md:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Discover our innovative software solutions and ongoing development projects
+              Discover our innovative software solutions that transform businesses
             </motion.p>
+            <motion.div
+              className="flex items-center justify-center space-x-6 text-blue-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <div className="text-center">
+                <div className="text-2xl font-bold">8+</div>
+                <div className="text-sm">Products</div>
+              </div>
+              <div className="w-px h-8 bg-blue-300"></div>
+              <div className="text-center">
+                <div className="text-2xl font-bold">5+</div>
+                <div className="text-sm">Industries</div>
+              </div>
+              <div className="w-px h-8 bg-blue-300"></div>
+              <div className="text-center">
+                <div className="text-2xl font-bold">4.7</div>
+                <div className="text-sm">Avg Rating</div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Ongoing Projects Section */}
-      <section ref={ongoingRef} className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300">
+      {/* Products Section */}
+      <section ref={productsRef} className="py-20 bg-white dark:bg-gray-800 transition-colors duration-300">
         <div className="container mx-auto px-4">
-          <motion.div
-            className="mb-12 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={ongoingInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Projects Under Development
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Get a sneak peek at our exciting projects currently in development
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {ongoingProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                className="bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={ongoingInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-                
-                onClick={() => setSelectedProject({ ...project, type: "ongoing"} )}
-              >
-                <div className="relative">
-                  <div className="relative h-48">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute top-0 right-0 m-4 px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full flex items-center">
-                      <FaClock className="mr-1" />
-                      <span>In Progress</span>
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-600">
-                    <motion.div
-                      className="h-1 bg-blue-600"
-                      initial={{ width: 0 }}
-                      animate={ongoingInView ? { width: `${project.progress}%` } : {}}
-                      transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
-                    ></motion.div>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex items-center mb-2">
-                    {getCategoryIcon(project.category)}
-                    <span className="ml-2 text-xs font-medium uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                      {categories.find((c) => c.id === project.category)?.name}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{project.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{project.description}</p>
-
-                  <div className="flex justify-between items-center text-sm">
-                    <div className="text-gray-500 dark:text-gray-400">
-                      <span className="font-medium">{project.progress}%</span> Complete
-                    </div>
-                    <div className="text-gray-500 dark:text-gray-400">
-                      ETA: <span className="font-medium">{project.eta}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Completed Projects Section */}
-      <section ref={completedRef} className="py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="mb-12 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={completedInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Completed Products</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Explore our portfolio of successful software solutions
-            </p>
-          </motion.div>
-
-          {/* Category Filter */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-3 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={completedInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {categories.map((category) => (
-              <motion.button
-                key={category.id}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category.id
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`}
-                onClick={() => {
-                  setActiveCategory(category.id)
-                  setCurrentPage(1)
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {category.name}
-              </motion.button>
-            ))}
-          </motion.div>
-
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence mode="wait">
-              {currentProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  whileHover={{ y: -10 }}
-                  onClick={() => setSelectedProject({ ...project, type: "completed" })}
-                  layout
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                      <div className="p-4">
-                        <div className="flex items-center mb-1">
-                          {getCategoryIcon(project.category)}
-                          <span className="ml-2 text-xs font-medium uppercase tracking-wider text-blue-300">
-                            {categories.find((c) => c.id === project.category)?.name}
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-bold text-white">{project.title}</h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{project.description}</p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.slice(0, 3).map((tech, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs">
-                          +{project.technologies.length - 3} more
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex justify-between items-center text-sm">
-                      <div className="text-gray-500 dark:text-gray-400">{project.year}</div>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Products Sidebar */}
+              <div className="lg:col-span-1">
+                <div className="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-xl border border-gray-100 dark:border-gray-600 sticky top-6">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Our Products</h3>
+                  <div className="space-y-3">
+                    {products.map((product, index) => (
                       <motion.button
-                        className="text-blue-600 dark:text-blue-400 font-medium flex items-center"
+                        key={product.id}
+                        className={`w-full text-left p-4 rounded-xl transition-all duration-300 group relative overflow-hidden ${
+                          activeProduct === index
+                            ? "bg-gradient-to-r " + product.color + " text-white shadow-lg scale-105"
+                            : "bg-gray-50 dark:bg-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500 hover:scale-102"
+                        }`}
+                        onClick={() => setActiveProduct(index)}
+                        onMouseEnter={() => setHoveredProduct(index)}
+                        onMouseLeave={() => setHoveredProduct(null)}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={productsInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.4, delay: index * 0.1 }}
                         whileHover={{ x: 5 }}
                       >
-                        View Details
-                        <BsArrowRight className="ml-1" />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <div
+                              className={`p-3 rounded-lg mr-3 ${
+                                activeProduct === index
+                                  ? "bg-white/20"
+                                  : "bg-gradient-to-r " + product.color + " shadow-md"
+                              }`}
+                            >
+                              {activeProduct === index ? (
+                                product.icon
+                              ) : (
+                                <div className="text-white">{product.icon}</div>
+                              )}
+                            </div>
+                            <div>
+                              <div className="font-semibold text-sm">{product.title}</div>
+                              <div className="text-xs opacity-75">{product.category}</div>
+                            </div>
+                          </div>
+                          {activeProduct === index && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              className="w-2 h-2 bg-white rounded-full"
+                            />
+                          )}
+                        </div>
                       </motion.button>
-                    </div>
+                    ))}
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+                </div>
+              </div>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-12">
-              <div className="flex items-center space-x-2">
-                <motion.button
-                  className={`p-2 rounded-full ${
-                    currentPage === 1
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`}
-                  onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  whileHover={currentPage > 1 ? { scale: 1.1 } : {}}
-                  whileTap={currentPage > 1 ? { scale: 0.9 } : {}}
-                >
-                  <IoIosArrowBack size={20} />
-                </motion.button>
-
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <motion.button
-                    key={index}
-                    className={`w-10 h-10 rounded-full ${
-                      currentPage === index + 1
-                        ? "bg-blue-600 text-white"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    }`}
-                    onClick={() => setCurrentPage(index + 1)}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+              {/* Product Details */}
+              <div className="lg:col-span-3">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeProduct}
+                    className="bg-white dark:bg-gray-700 rounded-2xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-600"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4 }}
                   >
-                    {index + 1}
-                  </motion.button>
-                ))}
+                    {/* Product Header with Image Carousel */}
+                    <div className="relative h-80 md:h-96 overflow-hidden">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={
+                            products[activeProduct].images[currentImageIndex] || "/placeholder.svg?height=400&width=600"
+                          }
+                          alt={`${products[activeProduct].title} - Image ${currentImageIndex + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-700 hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                <motion.button
-                  className={`p-2 rounded-full ${
-                    currentPage === totalPages
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`}
-                  onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  whileHover={currentPage < totalPages ? { scale: 1.1 } : {}}
-                  whileTap={currentPage < totalPages ? { scale: 0.9 } : {}}
-                >
-                  <IoIosArrowForward size={20} />
-                </motion.button>
+                        {/* Carousel Navigation */}
+                        {products[activeProduct].images.length > 1 && (
+                          <>
+                            <button
+                              onClick={() =>
+                                setCurrentImageIndex((prev) =>
+                                  prev === 0 ? products[activeProduct].images.length - 1 : prev - 1,
+                                )
+                              }
+                              className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm"
+                            >
+                              <FaChevronLeft className="text-lg" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                setCurrentImageIndex((prev) =>
+                                  prev === products[activeProduct].images.length - 1 ? 0 : prev + 1,
+                                )
+                              }
+                              className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm"
+                            >
+                              <FaChevronRight className="text-lg" />
+                            </button>
+                          </>
+                        )}
+
+                        {/* Image Indicators */}
+                        {products[activeProduct].images.length > 1 && (
+                          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                            {products[activeProduct].images.map((_, index) => (
+                              <button
+                                key={index}
+                                onClick={() => setCurrentImageIndex(index)}
+                                className={`w-3 h-3 rounded-full transition-all ${
+                                  currentImageIndex === index ? "bg-white" : "bg-white/50 hover:bg-white/75"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Thumbnail Strip */}
+                        {products[activeProduct].images.length > 1 && (
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
+                              {products[activeProduct].images.map((image, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                                    currentImageIndex === index
+                                      ? "border-white shadow-lg"
+                                      : "border-white/50 hover:border-white/75"
+                                  }`}
+                                >
+                                  <Image
+                                    src={image || "/placeholder.svg?height=48&width=64"}
+                                    alt={`Thumbnail ${index + 1}`}
+                                    width={64}
+                                    height={48}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Floating Status Badge */}
+                      <div className="absolute top-6 right-6">
+                        {getStatusBadge(products[activeProduct].status, products[activeProduct].progress)}
+                      </div>
+
+                      {/* Product Title Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-8">
+                        <div className="flex items-end justify-between">
+                          <div>
+                            <div className="flex items-center mb-4">
+                              <div
+                                className={`p-4 rounded-xl bg-gradient-to-r ${products[activeProduct].color} shadow-lg mr-4`}
+                              >
+                                {products[activeProduct].icon}
+                              </div>
+                              <div>
+                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                                  {products[activeProduct].title}
+                                </h2>
+                                <div className="flex items-center space-x-4">
+                                  <span className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium">
+                                    {products[activeProduct].category}
+                                  </span>
+                                  <StarRating rating={products[activeProduct].rating} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <motion.button
+                            className="p-4 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <FaPlay className="text-lg" />
+                          </motion.button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar for Ongoing Projects */}
+                    {products[activeProduct].status === "ongoing" && (
+                      <div className="px-8 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Development Progress
+                          </span>
+                          <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                            {products[activeProduct].progress}%
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                          <motion.div
+                            className={`h-2 rounded-full bg-gradient-to-r ${products[activeProduct].color}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${products[activeProduct].progress}%` }}
+                            transition={{ duration: 1.5, delay: 0.5 }}
+                          ></motion.div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Product Content */}
+                    <div className="p-8">
+                      {/* Description */}
+                      <div className="mb-8">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">About This Product</h3>
+                        <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                          {products[activeProduct].description}
+                        </p>
+                      </div>
+
+                      {/* Key Features */}
+                      <div className="mb-8">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Key Features</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {products[activeProduct].keyFeatures.map((feature, index) => (
+                            <motion.div
+                              key={index}
+                              className="flex items-center p-4 bg-gray-50 dark:bg-gray-600 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.3, delay: index * 0.1 }}
+                              whileHover={{ x: 5 }}
+                            >
+                              <div className={`p-2 rounded-lg bg-gradient-to-r ${products[activeProduct].color} mr-3`}>
+                                <FaCheck className="text-white text-sm" />
+                              </div>
+                              <span className="text-gray-700 dark:text-gray-300 font-medium">{feature}</span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Technologies */}
+                      <div className="mb-8">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Technologies Used</h3>
+                        <div className="flex flex-wrap gap-3">
+                          {products[activeProduct].technologies.map((tech, index) => (
+                            <motion.span
+                              key={index}
+                              className={`px-4 py-2 bg-gradient-to-r ${products[activeProduct].color} text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-shadow`}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              {tech}
+                            </motion.span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-900 dark:to-indigo-900">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 dark:from-blue-900 dark:to-indigo-900 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full filter blur-3xl"></div>
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-white/10 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to Build Your Next Digital Solution?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Let&apos;s discuss how we can help bring your ideas to life with our expertise in software development.
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Build Something Amazing?</h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Let's discuss how we can help bring your ideas to life with our expertise in software development.
             </p>
 
-            <motion.button
-              className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.location.href = '/contact'}
-            >
-              Start Your Project
-            </motion.button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button
+                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/contact'}
+              >
+                Start Your Project
+              </motion.button>
+             
+            </div>
           </motion.div>
         </div>
       </section>
-
-      {/* Project Detail Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectDetailModal
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-            type={selectedProject.type}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }

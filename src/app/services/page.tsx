@@ -21,6 +21,7 @@ import {
   FaCheck,
   FaRocket,
 } from "react-icons/fa"
+import {testimonials} from '@/data/Testimonials data'
 
 export default function ServicesPage() {
   const [activeService, setActiveService] = useState(0)
@@ -34,141 +35,6 @@ export default function ServicesPage() {
 
   const testimonialsRef = useRef(null)
   const testimonialsInView = useInView(testimonialsRef, { once: true, amount: 0.2 })
-
-  // Services data
-  const services = [
-    {
-      id: 1,
-      icon: <FaLaptopCode className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Web Application Development",
-      description:
-        "Custom web applications built with cutting-edge technologies for optimal performance and user experience.",
-      features: [
-        "Responsive design for all devices",
-        "Progressive Web Apps (PWA)",
-        "Single Page Applications (SPA)",
-        "E-commerce solutions",
-        "Content Management Systems",
-        "Custom dashboards and portals",
-      ],
-      technologies: ["React", "Next.js", "Angular", "Vue.js", "Node.js", "PHP", "Ruby on Rails"],
-      image: "/web.png?height=400&width=600",
-    },
-    {
-      id: 2,
-      icon: <FaMobileAlt className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Mobile App Development",
-      description:
-        "Native and cross-platform mobile applications that deliver seamless experiences across all devices.",
-      features: [
-        "iOS and Android development",
-        "Cross-platform solutions",
-        "UI/UX design for mobile",
-        "App Store optimization",
-        "Push notifications",
-        "Offline functionality",
-      ],
-      technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Ionic", "Xamarin"],
-      image: "/APP.png?height=400&width=600",
-    },
-    {
-      id: 3,
-      icon: <FaServer className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Backend Development",
-      description: "Robust and scalable backend systems that power your applications with reliability and performance.",
-      features: [
-        "API development and integration",
-        "Microservices architecture",
-        "Authentication and authorization",
-        "Payment gateway integration",
-        "Third-party API integration",
-        "Performance optimization",
-      ],
-      technologies: ["Node.js", "Python", "Java", "Go", "Ruby", ".NET", "PHP"],
-      image: "/Backend.png?height=400&width=600",
-    },
-    {
-      id: 4,
-      icon: <FaDatabase className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Database Design & Management",
-      description: "Optimized database architecture and management for efficient data storage and retrieval.",
-      features: [
-        "Database design and modeling",
-        "Data migration and integration",
-        "Performance tuning",
-        "Backup and recovery solutions",
-        "Database security",
-        "Big data solutions",
-      ],
-      technologies: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Firebase", "SQL Server", "Oracle"],
-      image: "/Database-design.png?height=400&width=600",
-    },
-    {
-      id: 5,
-      icon: <FaCloud className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Cloud Solutions",
-      description: "Scalable cloud infrastructure and services that grow with your business needs.",
-      features: [
-        "Cloud migration strategies",
-        "Infrastructure as Code (IaC)",
-        "Serverless architecture",
-        "Auto-scaling solutions",
-        "Disaster recovery planning",
-        "Cost optimization",
-      ],
-      technologies: ["AWS", "Azure", "Google Cloud", "Kubernetes", "Docker", "Terraform", "CloudFormation"],
-      image: "/Cloud.png?height=400&width=600",
-    },
-    {
-      id: 6,
-      icon: <FaRobot className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "AI & Machine Learning",
-      description: "Intelligent systems that learn and adapt to your business needs for smarter decision-making.",
-      features: [
-        "Predictive analytics",
-        "Natural Language Processing",
-        "Computer Vision",
-        "Recommendation systems",
-        "Chatbots and virtual assistants",
-        "Anomaly detection",
-      ],
-      technologies: ["TensorFlow", "PyTorch", "scikit-learn", "OpenAI", "Hugging Face", "NLTK", "OpenCV"],
-      image: "/AI.png?height=400&width=600",
-    },
-    {
-      id: 7,
-      icon: <FaCogs className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "DevOps Services",
-      description: "Streamlined development operations with continuous integration and deployment pipelines.",
-      features: [
-        "CI/CD pipeline setup",
-        "Infrastructure automation",
-        "Containerization",
-        "Monitoring and logging",
-        "Performance optimization",
-        "Security integration",
-      ],
-      technologies: ["Jenkins", "GitHub Actions", "GitLab CI", "Docker", "Kubernetes", "Ansible", "Terraform"],
-      image: "/Devops.png?height=400&width=600",
-    },
-    {
-      id: 8,
-      icon: <FaShieldAlt className="text-blue-500 dark:text-blue-400 text-4xl" />,
-      title: "Cybersecurity Solutions",
-      description: "Comprehensive security measures to protect your applications and data from threats.",
-      features: [
-        "Security assessment and auditing",
-        "Penetration testing",
-        "Secure coding practices",
-        "Authentication and authorization",
-        "Data encryption",
-        "Compliance (GDPR, HIPAA, etc.)",
-      ],
-      technologies: ["OWASP", "OAuth", "JWT", "SSL/TLS", "WAF", "SIEM", "Encryption"],
-      image: "/Cyber-Security.png?height=400&width=600",
-    },
-  ]
-
   // Development process steps
   const processSteps = [
     {
@@ -202,64 +68,141 @@ export default function ServicesPage() {
     },
   ]
 
-  // Testimonials data
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      position: "CTO, HealthTech Innovations",
-      company: "HealthTech Innovations",
-      image: "/placeholder.svg?height=200&width=200",
-      quote:
-        "Softlex Systems delivered our healthcare platform on time and within budget. Their expertise in both web and mobile development allowed us to launch a comprehensive solution that has transformed our patient care process.",
-      rating: 5,
-      project: "Healthcare Management Platform",
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      position: "Founder, EcoTrack",
-      company: "EcoTrack",
-      image: "/placeholder.svg?height=200&width=200",
-      quote:
-        "Working with Softlex was a game-changer for our startup. Their team took our concept and turned it into a polished, scalable product. Their technical expertise and commitment to our vision exceeded our expectations.",
-      rating: 5,
-      project: "Environmental Monitoring App",
-    },
-    {
-      id: 3,
-      name: "Jessica Rodriguez",
-      position: "VP of Digital, Global Retail",
-      company: "Global Retail",
-      image: "/placeholder.svg?height=200&width=200",
-      quote:
-        "The e-commerce platform Softlex built for us has increased our online sales by 45%. Their attention to detail and focus on user experience created a seamless shopping experience that our customers love.",
-      rating: 4,
-      project: "E-commerce Platform",
-    },
-    {
-      id: 4,
-      name: "David Patel",
-      position: "Director of IT, FinSecure",
-      company: "FinSecure",
-      image: "/placeholder.svg?height=200&width=200",
-      quote:
-        "Security was our top priority, and Softlex delivered a robust financial application that met all our compliance requirements. Their cybersecurity expertise was evident throughout the development process.",
-      rating: 5,
-      project: "Financial Security Application",
-    },
-    {
-      id: 5,
-      name: "Emma Wilson",
-      position: "Product Manager, EduLearn",
-      company: "EduLearn",
-      image: "/placeholder.svg?height=200&width=200",
-      quote:
-        "Our learning management system required complex features and integrations. Softlex not only delivered all requirements but also suggested improvements that made the platform even better than we envisioned.",
-      rating: 4,
-      project: "Learning Management System",
-    },
-  ]
+
+
+    const services = [
+      {
+        id: 1,
+        icon: <FaLaptopCode className="text-blue-500 dark:text-blue-400 text-4xl" />,
+        title: "Web Application Development",
+        description:
+          "Custom web applications built with cutting-edge technologies for optimal performance and user experience.",
+        features: [
+          "Responsive design for all devices",
+          "Progressive Web Apps (PWA)",
+          "Single Page Applications (SPA)",
+          "E-commerce solutions",
+          "Content Management Systems",
+          "Custom dashboards and portals",
+        ],
+        technologies: ["React", "Next.js", "Angular", "Vue.js", "Node.js", "PHP", "Ruby on Rails"],
+        image: "/web.png?height=400&width=600",
+      },
+      {
+        id: 2,
+        icon: <FaMobileAlt className="text-blue-500 dark:text-blue-400 text-4xl" />,
+        title: "Mobile App Development",
+        description:
+          "Native and cross-platform mobile applications that deliver seamless experiences across all devices.",
+        features: [
+          "iOS and Android development",
+          "Cross-platform solutions",
+          "UI/UX design for mobile",
+          "App Store optimization",
+          "Push notifications",
+          "Offline functionality",
+        ],
+        technologies: ["React Native", "Flutter", "Swift", "Kotlin", "Ionic", "Xamarin"],
+        image: "/APP.png?height=400&width=600",
+      },
+      {
+        id: 3,
+        icon: <FaServer className="text-blue-500 dark:text-blue-400 text-4xl" />,
+        title: "Backend Development",
+        description: "Robust and scalable backend systems that power your applications with reliability and performance.",
+        features: [
+          "API development and integration",
+          "Microservices architecture",
+          "Authentication and authorization",
+          "Payment gateway integration",
+          "Third-party API integration",
+          "Performance optimization",
+        ],
+        technologies: ["Node.js", "Python", "Java", "Go", "Ruby", ".NET", "PHP"],
+        image: "/Backend.png?height=400&width=600",
+      },
+      {
+        id: 4,
+        icon: <FaDatabase className="text-blue-500 dark:text-blue-400 text-4xl" />,
+        title: "Database Design & Management",
+        description: "Optimized database architecture and management for efficient data storage and retrieval.",
+        features: [
+          "Database design and modeling",
+          "Data migration and integration",
+          "Performance tuning",
+          "Backup and recovery solutions",
+          "Database security",
+          "Big data solutions",
+        ],
+        technologies: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Firebase", "SQL Server", "Oracle"],
+        image: "/Database-design.png?height=400&width=600",
+      },
+      {
+        id: 5,
+        icon: <FaCloud className="text-blue-500 dark:text-blue-400 text-4xl" />,
+        title: "Cloud Solutions",
+        description: "Scalable cloud infrastructure and services that grow with your business needs.",
+        features: [
+          "Cloud migration strategies",
+          "Infrastructure as Code (IaC)",
+          "Serverless architecture",
+          "Auto-scaling solutions",
+          "Disaster recovery planning",
+          "Cost optimization",
+        ],
+        technologies: ["AWS", "Azure", "Google Cloud", "Kubernetes", "Docker", "Terraform", "CloudFormation"],
+        image: "/Cloud.png?height=400&width=600",
+      },
+      // {
+      //   id: 6,
+      //   icon: <FaRobot className="text-blue-500 dark:text-blue-400 text-4xl" />,
+      //   title: "AI & Machine Learning",
+      //   description: "Intelligent systems that learn and adapt to your business needs for smarter decision-making.",
+      //   features: [
+      //     "Predictive analytics",
+      //     "Natural Language Processing",
+      //     "Computer Vision",
+      //     "Recommendation systems",
+      //     "Chatbots and virtual assistants",
+      //     "Anomaly detection",
+      //   ],
+      //   technologies: ["TensorFlow", "PyTorch", "scikit-learn", "OpenAI", "Hugging Face", "NLTK", "OpenCV"],
+      //   image: "/AI.png?height=400&width=600",
+      // },
+      // {
+      //   id: 7,
+      //   icon: <FaCogs className="text-blue-500 dark:text-blue-400 text-4xl" />,
+      //   title: "DevOps Services",
+      //   description: "Streamlined development operations with continuous integration and deployment pipelines.",
+      //   features: [
+      //     "CI/CD pipeline setup",
+      //     "Infrastructure automation",
+      //     "Containerization",
+      //     "Monitoring and logging",
+      //     "Performance optimization",
+      //     "Security integration",
+      //   ],
+      //   technologies: ["Jenkins", "GitHub Actions", "GitLab CI", "Docker", "Kubernetes", "Ansible", "Terraform"],
+      //   image: "/Devops.png?height=400&width=600",
+      // },
+      // {
+      //   id: 8,
+      //   icon: <FaShieldAlt className="text-blue-500 dark:text-blue-400 text-4xl" />,
+      //   title: "Cybersecurity Solutions",
+      //   description: "Comprehensive security measures to protect your applications and data from threats.",
+      //   features: [
+      //     "Security assessment and auditing",
+      //     "Penetration testing",
+      //     "Secure coding practices",
+      //     "Authentication and authorization",
+      //     "Data encryption",
+      //     "Compliance (GDPR, HIPAA, etc.)",
+      //   ],
+      //   technologies: ["OWASP", "OAuth", "JWT", "SSL/TLS", "WAF", "SIEM", "Encryption"],
+      //   image: "/Cyber-Security.png?height=400&width=600",
+      // },
+    ]
+
 
   // Star rating component
   const StarRating = ({ rating }: { rating: number }) => {
@@ -444,6 +387,7 @@ export default function ServicesPage() {
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => window.location.href = '/contact'}
                     >
                       Get a Quote
                       <FaArrowRight className="ml-2" />

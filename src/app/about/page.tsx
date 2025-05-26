@@ -15,10 +15,137 @@ import {
   FaRocket,
   FaHandshake,
 } from "react-icons/fa"
+import { Github, Linkedin } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import{team} from '@/data/Team members'
+
+interface TeamMember {
+  id: number
+  name: string
+  role: string
+  image: string
+  linkedin?: string
+  github?: string
+  bio?: string
+}
+
+interface TeamMemberCardProps {
+  member: TeamMember
+  index: number
+}
+
+function TeamMemberCard({ member, index }: TeamMemberCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  return (
+    <motion.div
+      key={member.id}
+      className="group"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -10 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      <Card className="overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300">
+        <CardContent className="p-0">
+          <div className="relative overflow-hidden">
+            <div className="aspect-square relative">
+              <Image
+                src={member.image || "/placeholder.svg?height=400&width=400"}
+                alt={member.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
+
+            {/* Overlay with social links */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isHovered ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div
+                className="transform"
+                initial={{ y: 20 }}
+                animate={{ y: isHovered ? 0 : 20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h3 className="text-xl font-semibold text-white mb-1">{member.name}</h3>
+                <p className="text-blue-300 mb-4">{member.role}</p>
+
+                {/* Social Links */}
+                <div className="flex gap-3">
+                  {member.linkedin && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-sm"
+                      onClick={() => window.open(member.linkedin, "_blank")}
+                    >
+                      <Linkedin className="w-4 h-4 mr-2" />
+                      LinkedIn
+                    </Button>
+                  )}
+                  {member.github && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-sm"
+                      onClick={() => window.open(member.github, "_blank")}
+                    >
+                      <Github className="w-4 h-4 mr-2" />
+                      GitHub
+                    </Button>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Card Footer */}
+          <div className="p-6 text-center bg-white dark:bg-gray-900">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">{member.name}</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-3">{member.role}</p>
+
+            {member.bio && <p className="text-sm text-gray-500 dark:text-gray-500 mb-4">{member.bio}</p>}
+
+            {/* Social Links for non-hover state */}
+            <div className="flex justify-center gap-2">
+              {member.linkedin && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => window.open(member.linkedin, "_blank")}
+                  className="hover:bg-blue-50 hover:border-blue-300"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </Button>
+              )}
+              {member.github && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => window.open(member.github, "_blank")}
+                  className="hover:bg-gray-50 hover:border-gray-300"
+                >
+                  <Github className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  )
+}
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState("mission")
- 
 
   const heroRef = useRef(null)
   const { scrollYProgress } = useScroll({
@@ -29,8 +156,6 @@ export default function AboutPage() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
   const y = useTransform(scrollYProgress, [0, 0.5], [0, 100])
-
- 
 
   const tabs = [
     { id: "mission", label: "Our Mission" },
@@ -92,29 +217,44 @@ export default function AboutPage() {
     },
   ]
 
-
-  const team = [
-    {
-      name: "Alex Johnson",
-      role: "Founder & CEO",
-      image: "/placeholder.svg?height=300&width=300",
-    },
-    {
-      name: "Sarah Chen",
-      role: "CTO",
-      image: "/placeholder.svg?height=300&width=300",
-    },
-    {
-      name: "Michael Rodriguez",
-      role: "Lead Developer",
-      image: "/placeholder.svg?height=300&width=300",
-    },
-    {
-      name: "Emily Patel",
-      role: "UX Director",
-      image: "/placeholder.svg?height=300&width=300",
-    },
-  ]
+  // const team: TeamMember[] = [
+  //   {
+  //     id: 1,
+  //     name: "Alex Johnson",
+  //     role: "Founder & CEO",
+  //     image: "/placeholder.svg?height=400&width=400",
+  //     linkedin: "https://linkedin.com/in/alex-johnson",
+  //     github: "https://github.com/alex-johnson",
+  //     bio: "Visionary leader with 10+ years of experience in software development and business strategy.",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Sarah Chen",
+  //     role: "CTO",
+  //     image: "/placeholder.svg?height=400&width=400",
+  //     linkedin: "https://linkedin.com/in/sarah-chen",
+  //     github: "https://github.com/sarah-chen",
+  //     bio: "Technical expert specializing in scalable architecture and emerging technologies.",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Michael Rodriguez",
+  //     role: "Lead Developer",
+  //     image: "/placeholder.svg?height=400&width=400",
+  //     linkedin: "https://linkedin.com/in/michael-rodriguez",
+  //     github: "https://github.com/michael-rodriguez",
+  //     bio: "Full-stack developer passionate about clean code and innovative solutions.",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Emily Patel",
+  //     role: "UX Director",
+  //     image: "/placeholder.svg?height=400&width=400",
+  //     linkedin: "https://linkedin.com/in/emily-patel",
+  //     github: "https://github.com/emily-patel",
+  //     bio: "Creative designer focused on user-centered design and exceptional user experiences.",
+  //   },
+  // ]
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -146,8 +286,8 @@ export default function AboutPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            We&apos;re a team of passionate technologists dedicated to creating innovative software solutions that transform
-            businesses and drive digital success.
+            We&apos;re a team of passionate technologists dedicated to creating innovative software solutions that
+            transform businesses and drive digital success.
           </motion.p>
 
           <motion.div
@@ -182,18 +322,22 @@ export default function AboutPage() {
 
               <div className="space-y-4 text-gray-600 dark:text-gray-300">
                 <p>
-                  Founded in 2008, Softlex Systems began with a simple mission: to help businesses leverage technology
-                  to achieve their goals. What started as a small team of three developers has grown into a full-service
-                  software development company with over 50 talented professionals.
+                  Soflex Systems was founded in 2024 by three close friends and passionate tech enthusiasts during our
+                  undergraduate journey at COMSATS University Lahore. What began as small freelance gigs and late-night
+                  coding sessions quickly grew into a vision: to build a company that delivers world-class digital
+                  solutions from Pakistan to the rest of the world.
                 </p>
                 <p>
-                  Over the years, we&apos;ve partnered with startups, mid-sized businesses, and Fortune 500 companies across
-                  various industries, delivering custom software solutions that drive innovation and growth.
+                  Driven by innovation, teamwork, and an unshakable belief in our skills, we transformed our dorm-room
+                  startup into a full-service software development company. Today, Soflex Systems partners with clients
+                  across the globe—from startups to enterprise brands—offering high-quality web, mobile, and custom
+                  software solutions designed to solve real-world problems and fuel business growth.
                 </p>
                 <p>
-                  Our journey has been defined by continuous learning, adaptation, and a relentless focus on client
-                  success. As technology evolves, so do we, constantly expanding our expertise to stay at the forefront
-                  of digital transformation.
+                  At our core, we believe in continuous learning, adaptability, and putting people first. Our journey is
+                  built on trust, collaboration, and a relentless pursuit of excellence. As we grow, our mission remains
+                  clear: to empower businesses worldwide through cutting-edge technology, all proudly built from Lahore,
+                  Pakistan.
                 </p>
               </div>
             </motion.div>
@@ -205,19 +349,8 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="relative h-[400px] w-full rounded-lg overflow-hidden shadow-xl">
-                <Image
-                  src="/placeholder.svg?height=400&width=600"
-                  alt="Softlex Systems Team"
-                  fill
-                  className="object-cover"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                  <div className="p-6 text-white">
-                    <p className="text-lg font-medium">Our headquarters in Silicon Valley</p>
-                  </div>
-                </div>
+              <div className="relative h-[400px] w-full rounded-lg overflow-hidden shadow-xl bg-black">
+                <Image src="/story.png" alt="Softlex Systems Team" fill className="object-cover" />
               </div>
 
               {/* Floating elements */}
@@ -300,8 +433,12 @@ export default function AboutPage() {
             >
               <div className="text-center">
                 {tabContent[activeTab as keyof typeof tabContent].icon}
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{tabContent[activeTab as keyof typeof tabContent].title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{tabContent[activeTab as keyof typeof tabContent].description}</p>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                  {tabContent[activeTab as keyof typeof tabContent].title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {tabContent[activeTab as keyof typeof tabContent].description}
+                </p>
               </div>
             </motion.div>
           </div>
@@ -353,9 +490,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-
-      {/* Team Section */}
-      <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+      {/* Team Section - Updated with Interactive Cards */}
+      <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-16"
@@ -372,45 +508,14 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, index) => (
-              <motion.div
-                key={index}
-                className="group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-              >
-                <div className="relative overflow-hidden rounded-xl shadow-lg">
-                  <div className="aspect-square relative">
-                    <Image
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <h3 className="text-xl font-semibold text-white">{member.name}</h3>
-                      <p className="text-blue-300">{member.role}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 text-center">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{member.name}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{member.role}</p>
-                </div>
-              </motion.div>
+              <TeamMemberCard key={member.id} member={member} index={index} />
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+      <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div className="container mx-auto px-4">
           <motion.div
             className="max-w-4xl mx-auto text-center"
@@ -437,16 +542,9 @@ export default function AboutPage() {
                 className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/contact'}
               >
                 Schedule a Consultation
-              </motion.button>
-
-              <motion.button
-                className="px-8 py-3 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-blue-600 dark:text-blue-400 font-medium rounded-lg shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-600 transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View Our Portfolio
               </motion.button>
             </motion.div>
           </motion.div>
@@ -455,3 +553,4 @@ export default function AboutPage() {
     </div>
   )
 }
+
