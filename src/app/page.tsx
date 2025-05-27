@@ -8,7 +8,6 @@ import Image from "next/image"
 export default function Home() {
   const [activeService, setActiveService] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-
   useEffect(() => {
     setIsVisible(true)
 
@@ -310,13 +309,14 @@ export default function Home() {
               Let&apos;s discuss how our software solutions can help you achieve your business goals.
             </p>
 
-            <motion.button
-              className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            <a href="/contact"><motion.button
+              className="px-8 py-4 cursor-pointer bg-white hover:bg-gray-100 text-blue-600 font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Schedule a Consultation
+             Schedule a Consultation
             </motion.button>
+            </a>
           </motion.div>
         </div>
       </section>

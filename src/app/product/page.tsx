@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import {
-  FaMobileAlt,
+  //FaMobileAlt,
   FaGlobe,
   FaTicketAlt,
   FaPlane,
@@ -28,38 +28,38 @@ export default function ProductsPage() {
   }, [activeProduct])
 
   const products = [
-    {
-      id: 1,
-      title: "Rimsha Labs",
-      category: "Healthcare",
-      status: "Completed",
-      icon: <FaMobileAlt className="text-white text-2xl" />,
-      description:
-        "RIMSHA LAB offers a seamless and compassionate healthcare experience, providing expert diagnostic testing and a comprehensive range of medical services. Our dedicated team is committed to delivering timely, personalized, and reliable care, ensuring clear communication and support at every step of your healthcare journey. Whether you need to book a sample collection or explore our services, we are here to assist you with professionalism and care.",
-      images: [
-         "/Rimsh-tumbnail.png",
-        "/Rimsha-1.png",
-        "/Rimsha-2.png",
-        "/Rimsha-3.png",
-      ],
-      keyFeatures: [
-        "Wide range of diagnostic tests",
-        "Accurate and timely test reports",
-        "State-of-the-art lab equipment",
-        "Expert-certified analysis",
-        "Online report access",
-        "Home sample collection",
-        "Affordable pricing",
-        "Confidential and secure results",
-      ],
-      technologies: ["Next js", "Strapi", "Shadcn Ui", "Vercel"],
-      rating: 4.8,
-      color: "from-blue-500 to-blue-600",
-    },
+    // {
+    //   id: 1,
+    //   title: "Rimsha Labs",
+    //   category: "Healthcare",
+    //   status: "Completed",
+    //   icon: <FaMobileAlt className="text-white text-2xl" />,
+    //   description:
+    //     "RIMSHA LAB offers a seamless and compassionate healthcare experience, providing expert diagnostic testing and a comprehensive range of medical services. Our dedicated team is committed to delivering timely, personalized, and reliable care, ensuring clear communication and support at every step of your healthcare journey. Whether you need to book a sample collection or explore our services, we are here to assist you with professionalism and care.",
+    //   images: [
+    //      "/Rimsh-tumbnail.png",
+    //     "/Rimsha-1.png",
+    //     "/Rimsha-2.png",
+    //     "/Rimsha-3.png",
+    //   ],
+    //   keyFeatures: [
+    //     "Wide range of diagnostic tests",
+    //     "Accurate and timely test reports",
+    //     "State-of-the-art lab equipment",
+    //     "Expert-certified analysis",
+    //     "Online report access",
+    //     "Home sample collection",
+    //     "Affordable pricing",
+    //     "Confidential and secure results",
+    //   ],
+    //   technologies: ["Next js", "Strapi", "Shadcn Ui", "Vercel"],
+    //   rating: 4.8,
+    //   color: "from-blue-500 to-blue-600",
+    // },
     {
       id: 2,
       title: "PATHOLOGY LAB MANAGEMENT SYSTEM",
-      category: "Government",
+      category: "Healthcare",
       status: "ongoing",
       progress: 30,
       icon: <FaGlobe className="text-white text-2xl" />,

@@ -1,163 +1,9 @@
 "use client"
-
-import type React from "react"
-
-import { useState, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaLinkedin,
-  FaTwitter,
-  FaFacebook,
-  FaInstagram,
-  FaCheck,
-  FaExclamationTriangle,
-} from "react-icons/fa"
-import { sendContactForm } from "@/app/actions"
+import { motion } from "framer-motion"
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa"
+import ContactForm from "@/components/contact_form"
 
 export default function ContactPage() {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    subject: "",
-    message: "",
-    budget: "",
-    services: [] as string[],
-  })
-
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-  const [activeField, setActiveField] = useState<string | null>(null)
-  const formRef = useRef<HTMLFormElement>(null)
-
-  const services = [
-    "Web Development",
-    "Mobile App Development",
-    "UI/UX Design",
-    "Cloud Solutions",
-    "AI & Machine Learning",
-    "DevOps Services",
-    "Cybersecurity",
-    "Consulting",
-  ]
-
-
-  const budgetOptions = [
-  "$100 - $500",
-  "$500 - $1,000",
-  "$1,000 - $2,000",
-  "$2,000 - $3,000",
-  "$3,000 - $4,000",
-  "$4,000 - $5,000",
-  "Above $5,000",
-  "Not sure yet",
-];
-
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormState((prev) => ({ ...prev, [name]: value }))
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  }
-
-  const handleServiceToggle = (service: string) => {
-    setFormState((prev) => {
-      const services = [...prev.services]
-      if (services.includes(service)) {
-        return { ...prev, services: services.filter((s) => s !== service) }
-      } else {
-        return { ...prev, services: [...services, service] }
-      }
-    })
-  }
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-
-    if (!formState.name.trim()) {
-      newErrors.name = "Name is required"
-    }
-
-    if (!formState.email.trim()) {
-      newErrors.email = "Email is required"
-    } else if (!/^\S+@\S+\.\S+$/.test(formState.email)) {
-      newErrors.email = "Please enter a valid email address"
-    }
-
-    if (!formState.message.trim()) {
-      newErrors.message = "Message is required"
-    }
-
-    if (formState.services.length === 0) {
-      newErrors.services = "Please select at least one service"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) return
-
-    setIsSubmitting(true)
-
-    try {
-      await sendContactForm(formState)
-      setSubmitStatus("success")
-
-      // Reset form after successful submission
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        subject: "",
-        message: "",
-        budget: "",
-        services: [],
-      })
-
-      // Scroll to top of form to show success message
-      if (formRef.current) {
-        formRef.current.scrollIntoView({ behavior: "smooth" })
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error)
-      setSubmitStatus("error")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const inputClasses = (fieldName: string) => `
-    w-full px-4 py-3 rounded-lg border 
-    ${
-      errors[fieldName]
-        ? "border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10"
-        : activeField === fieldName
-          ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/10"
-          : "border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
-    }
-    text-gray-900 dark:text-white
-    focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
-    transition-all duration-300
-  `
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Hero Section */}
@@ -214,7 +60,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Email Us</h3>
-                      <p className="text-gray-600 dark:text-gray-300">info@softlexsystems.com</p>
+                      <p className="text-gray-600 dark:text-gray-300">softlexsystem.co@gmail.com</p>
                     </div>
                   </motion.div>
 
@@ -237,7 +83,7 @@ export default function ContactPage() {
                       <p className="text-gray-600 dark:text-gray-300">
                         Airport Road
                         <br />
-                        Lahore, Punjab, 
+                        Lahore, Punjab,
                         <br />
                         Pakistan
                       </p>
@@ -270,317 +116,14 @@ export default function ContactPage() {
                 </div>
               </motion.div>
 
-              {/* Contact Form */}
+              {/* Contact Form Component */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="bg-gray-50 dark:bg-gray-700 rounded-xl p-8 shadow-lg"
               >
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Send Us a Message</h2>
-
-                <AnimatePresence mode="wait">
-                  {submitStatus === "success" ? (
-                    <motion.div
-                      className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 p-6 rounded-lg mb-6"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-green-200 dark:bg-green-800 rounded-full mr-3">
-                          <FaCheck className="text-green-700 dark:text-green-300" />
-                        </div>
-                        <h3 className="text-lg font-semibold">Message Sent Successfully!</h3>
-                      </div>
-                      <p>Thank you for contacting us. We&apos;ve received your message and will get back to you shortly.</p>
-                      <motion.button
-                        className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
-                        onClick={() => setSubmitStatus("idle")}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Send Another Message
-                      </motion.button>
-                    </motion.div>
-                  ) : submitStatus === "error" ? (
-                    <motion.div
-                      className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-6 rounded-lg mb-6"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <div className="flex items-center mb-4">
-                        <div className="p-2 bg-red-200 dark:bg-red-800 rounded-full mr-3">
-                          <FaExclamationTriangle className="text-red-700 dark:text-red-300" />
-                        </div>
-                        <h3 className="text-lg font-semibold">Something Went Wrong</h3>
-                      </div>
-                      <p>We couldn&apos;t send your message. Please try again or contact us directly via email or phone.</p>
-                      <motion.button
-                        className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
-                        onClick={() => setSubmitStatus("idle")}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Try Again
-                      </motion.button>
-                    </motion.div>
-                  ) : (
-                    <motion.form
-                      ref={formRef}
-                      onSubmit={handleSubmit}
-                      className="space-y-6"
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label htmlFor="name" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                            Full Name <span className="text-red-500">*</span>
-                          </label>
-                          <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                            <input
-                              type="text"
-                              id="name"
-                              name="name"
-                              value={formState.name}
-                              onChange={handleChange}
-                              onFocus={() => setActiveField("name")}
-                              onBlur={() => setActiveField(null)}
-                              className={inputClasses("name")}
-                              placeholder="John Doe"
-                            />
-                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                          </motion.div>
-                        </div>
-
-                        <div>
-                          <label htmlFor="email" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                            Email Address <span className="text-red-500">*</span>
-                          </label>
-                          <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                            <input
-                              type="email"
-                              id="email"
-                              name="email"
-                              value={formState.email}
-                              onChange={handleChange}
-                              onFocus={() => setActiveField("email")}
-                              onBlur={() => setActiveField(null)}
-                              className={inputClasses("email")}
-                              placeholder="john@example.com"
-                            />
-                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-                          </motion.div>
-                        </div>
-
-                        <div>
-                          <label htmlFor="phone" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                            Phone Number
-                          </label>
-                          <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                            <input
-                              type="tel"
-                              id="phone"
-                              name="phone"
-                              value={formState.phone}
-                              onChange={handleChange}
-                              onFocus={() => setActiveField("phone")}
-                              onBlur={() => setActiveField(null)}
-                              className={inputClasses("phone")}
-                              placeholder="+1 (555) 123-4567"
-                            />
-                          </motion.div>
-                        </div>
-
-                        <div>
-                          <label htmlFor="company" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                            Company Name
-                          </label>
-                          <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                            <input
-                              type="text"
-                              id="company"
-                              name="company"
-                              value={formState.company}
-                              onChange={handleChange}
-                              onFocus={() => setActiveField("company")}
-                              onBlur={() => setActiveField(null)}
-                              className={inputClasses("company")}
-                              placeholder="Your Company"
-                            />
-                          </motion.div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="subject" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                          Subject
-                        </label>
-                        <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                          <input
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            value={formState.subject}
-                            onChange={handleChange}
-                            onFocus={() => setActiveField("subject")}
-                            onBlur={() => setActiveField(null)}
-                            className={inputClasses("subject")}
-                            placeholder="Project Inquiry"
-                          />
-                        </motion.div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="budget" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                          Budget Range
-                        </label>
-                        <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                          <select
-                            id="budget"
-                            name="budget"
-                            value={formState.budget}
-                            onChange={handleChange}
-                            onFocus={() => setActiveField("budget")}
-                            onBlur={() => setActiveField(null)}
-                            className={inputClasses("budget")}
-                          >
-                            <option value="" disabled>
-                              Select your budget range
-                            </option>
-                            {budgetOptions.map((option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        </motion.div>
-                      </div>
-
-                      <div>
-                        <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                          Services You&apos;re Interested In <span className="text-red-500">*</span>
-                        </label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                          {services.map((service) => (
-                            <motion.div
-                              key={service}
-                              className={`
-                                flex items-center p-3 rounded-lg cursor-pointer border
-                                ${
-                                  formState.services.includes(service)
-                                    ? "bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700"
-                                    : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-                                }
-                                transition-colors duration-200
-                              `}
-                              onClick={() => handleServiceToggle(service)}
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <div
-                                className={`w-5 h-5 mr-3 flex-shrink-0 rounded border ${
-                                  formState.services.includes(service)
-                                    ? "bg-blue-500 border-blue-500 dark:bg-blue-600 dark:border-blue-600"
-                                    : "border-gray-300 dark:border-gray-600"
-                                }`}
-                              >
-                                {formState.services.includes(service) && (
-                                  <svg
-                                    className="w-5 h-5 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      d="M5 13l4 4L19 7"
-                                    ></path>
-                                  </svg>
-                                )}
-                              </div>
-                              <span className="text-gray-700 dark:text-gray-300">{service}</span>
-                            </motion.div>
-                          ))}
-                        </div>
-                        {errors.services && <p className="text-red-500 text-sm mt-2">{errors.services}</p>}
-                      </div>
-
-                      <div>
-                        <label htmlFor="message" className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
-                          Project Details <span className="text-red-500">*</span>
-                        </label>
-                        <motion.div whileFocus={{ scale: 1.01 }} className="relative">
-                          <textarea
-                            id="message"
-                            name="message"
-                            value={formState.message}
-                            onChange={handleChange}
-                            onFocus={() => setActiveField("message")}
-                            onBlur={() => setActiveField(null)}
-                            className={`${inputClasses("message")} min-h-[150px] resize-y`}
-                            placeholder="Tell us about your project, goals, and timeline..."
-                            rows={5}
-                          ></textarea>
-                          {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
-                        </motion.div>
-                      </div>
-
-                      <motion.button
-                        type="submit"
-                        className={`
-                          w-full py-3 px-6 rounded-lg font-medium text-white
-                          ${
-                            isSubmitting
-                              ? "bg-blue-400 dark:bg-blue-600 cursor-not-allowed"
-                              : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
-                          }
-                          transition-colors duration-300 flex items-center justify-center
-                        `}
-                        whileHover={!isSubmitting ? { scale: 1.02 } : {}}
-                        whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <svg
-                              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                              ></circle>
-                              <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              ></path>
-                            </svg>
-                            Sending...
-                          </>
-                        ) : (
-                          "Send Message"
-                        )}
-                      </motion.button>
-                    </motion.form>
-                  )}
-                </AnimatePresence>
+                <ContactForm />
               </motion.div>
             </div>
           </div>
@@ -612,19 +155,17 @@ export default function ContactPage() {
           >
             <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3401.141071669384!2d74.4230593746354!3d31.520285147147955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1747731130250!5m2!1sen!2s" 
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3401.141071669384!2d74.4230593746354!3d31.520285147147955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1747731130250!5m2!1sen!2s"
                 height="100%"
                 width="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Softlex Systems Office Location"
+                title="Softlex System Office Location"
                 className="grayscale hover:grayscale-0 transition-all duration-500"
               ></iframe>
             </div>
-
-    
           </motion.div>
         </div>
       </section>

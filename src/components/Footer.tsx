@@ -44,7 +44,7 @@ export default function Footer() {
     { name: "About", href: "/about" },
     { name: "Services", href: "/services" },
     { name: "Products", href: "/product" },
-    { name: "Blog", href: "/blog" },
+//{ name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ]
 
@@ -59,7 +59,7 @@ export default function Footer() {
   const contactInfo = [
     { icon: <MapPin size={18} />, text: "Lahore, Pakistan" },
     { icon: <Phone size={18} />, text: "+92-320-8468911" },
-    { icon: <Mail size={18} />, text: "info@softlexsystems.com" },
+    { icon: <Mail size={18} />, text: "softlexsystem.co@gmail.com" },
   ]
 
   return (
@@ -102,7 +102,7 @@ export default function Footer() {
                   />
                 </div>
                 <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
-                  Softlex Systems
+                  Softlex System
                 </h3>
               </div>
 
